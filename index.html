@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 
+  先按alt键，然后鼠标点每一行的文字，alt键不动按住shift键，再加方向往右，ctrl+c，把文字复制出来
+
+  再来到注释的右边，用alt键选中每一行，按回车  然后输入 {{ else if $value.type.indexOf(粘贴) != -1 }}
+ -->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>天知道</title>
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/iconfont.css" />
+  <link rel="stylesheet" href="css/main2.css" />
+  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+  <style>
+    .tem .iconfont {
+      font-size: 50px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrap">
+    <div class="search_form">
+      <div class="logo"><img src="img/logo.png" alt="logo" /></div>
+      <div class="form_group">
+        <input type="text" class="input_txt" placeholder="请输入查询的天气" />
+        <button class="input_sub">搜 索</button>
+      </div>
+      <div class="hotkey">
+        <a href="javascript:;">北京</a><a href="javascript:;">上海</a><a href="javascript:;">广州</a><a
+          href="javascript:;">深圳</a>
+      </div>
+    </div>
+    <ul class="weather_list">
+      <li>
+        <div class="info_type">
+          <span class="iconfont">&#xeb87;</span>
+        </div>
+        <div class="info_temp">高 <b>32℃</b><br />低 32℃</div>
+        <div class="info_date"><b>小雨</b><span>5月19日</span></div>
+      </li>
+      <li>
+        <div class="info_type">
+          <span class="iconfont">&#xe932;</span>
+        </div>
+        <div class="info_temp">高 <b>32℃</b><br />低 32℃</div>
+        <div class="info_date"><b>小雨</b><span>5月19日</span></div>
+      </li>
+    </ul>
+
+  </div>
+
+  <script>
+    /*
+    <div class="tem">
+      <h2>模板</h2>
+      <!-- 小雨 -->
+      <span class="iconfont">&#xe932;</span>
+      <!-- 大雨 -->
+      <span class="iconfont">&#xe931;</span>
+      <!-- 晴 -->
+      <span class="iconfont">&#xe933;</span>
+      <!-- 雨夹雪 -->
+      <span class="iconfont">&#xe934;</span>
+      <!-- 阴天 -->
+      <span class="iconfont">&#xe92d;</span>
+      <!-- 风 -->
+      <span class="iconfont">&#xeb8c;</span>
+      <!-- 雪 -->
+      <span class="iconfont">&#xeb87;</span>
+      <!-- 多云 -->
+      <span class="iconfont">&#xeb79;</span>
+      <!-- 雷 -->
+      <span class="iconfont">&#xeb77;</span>
+      <!-- 冰雹 -->
+      <span class="iconfont">&#xeb76;</span>
+      <!-- 雾霾 -->
+      <span class="iconfont">&#xeb75;</span>
+    </div>
+    */
+  </script>
+
+  <!-- 
+    1.给搜索加点击事件
+      1.1 先把搜索框多一个加载动画
+      1.2 拿到文本框输入的城市去请求接口获取天气数据
+      1.3 创建模板，生成html加到界面上
+
+    2.给热词加点击事件
+        谁被点，就被谁放到文本框里，然后再去查询结果
+   -->
+
+
+  <!-- 1. 导入模板 -->
+  <script src="./js/template-web.js"></script>
+  <!-- 2. 准备模板 -->
+  <script type="text/html" id="tpl">
+
+  {{ each }}
+
+    <li>
+        <div class="info_type">
+          
+          <!-- 小雨 -->
+          {{ if $value.type.indexOf("小雨") != -1 }}
+          <span class="iconfont">&#xe932;</span>
+          <!-- 大雨 -->
+          {{ else if $value.type.indexOf("大雨") != -1 }}
+          <span class="iconfont">&#xe931;</span>
+          <!-- 晴 -->
+          {{ else if $value.type.indexOf("晴") != -1 }}
+          <span class="iconfont">&#xe933;</span>
+          <!-- 雨夹雪 -->
+          {{ else if $value.type.indexOf("雨夹雪") != -1 }}
+          <span class="iconfont">&#xe934;</span>
+          <!-- 阴 -->
+          {{ else if $value.type.indexOf("阴") != -1 }}
+          <span class="iconfont">&#xe92d;</span>
+          <!-- 风 -->
+          {{ else if $value.type.indexOf("风") != -1 }}
+          <span class="iconfont">&#xeb8c;</span>
+          <!-- 雪 -->
+          {{ else if $value.type.indexOf("雪") != -1 }}
+          <span class="iconfont">&#xeb87;</span>
+          <!-- 多云 -->
+          {{ else if $value.type.indexOf("多云") != -1 }}
+          <span class="iconfont">&#xeb79;</span>
+          <!-- 雷 -->
+          {{ else if $value.type.indexOf("雷") != -1 }}
+          <span class="iconfont">&#xeb77;</span>
+          <!-- 冰雹 -->
+          {{ else if $value.type.indexOf("冰雹") != -1 }}
+          <span class="iconfont">&#xeb76;</span>
+          <!-- 雾霾 -->
+          {{ else if $value.type.indexOf("雾霾") != -1 }}
+          <span class="iconfont">&#xeb75;</span>
+          {{ else if $value.type.indexOf("阵雨") != -1 }}
+           <span class="iconfont">&#xe932;</span>
+          {{ /if }}
+
+        </div>
+
+        <div class="info_temp">高 <b>{{ $value.high.split(' ')[1] }}</b><br />低 {{ $value.low.split(' ')[1] }}</div>
+
+
+        <div class="info_date"><b>{{ $value.type }}</b><span>{{ month }}月{{$value.date}}</span></div>
+    </li>
+ 
+  {{ /each }}
+
+  </script>
+
+  <script src="./js/jquery-1.12.4.min.js"></script>
+
+  <script>
+
+    // var str = "高温 32°";
+    // // 按空格分隔成数组
+    // var arr = str.split(' ');
+    // console.log(arr);
+    var date = new Date();
+    var month = date.getMonth() + 1; //获取的月份从0开始,所以记得要+1得到当前月份
+    // console.log(month);
+
+
+
+    //  1. 搜索按钮的点击事件
+    $('.input_sub').click(function () {
+
+      //1.1 先把搜索框多一个加载动画
+      $(this).addClass('loading');
+
+      //1.2 加载数据
+      $.get({
+
+        url: "http://wthrcdn.etouch.cn/weather_mini",
+        data: { city: $('.input_txt').val() },
+        dataType: "json",
+        success: function (obj) {
+
+          // 数组本质上也是对象，既然是对象，可以动态添加属性
+          obj.data.forecast.month = month;
+
+          // 拿到结果后先把加载动画去掉
+          $('.input_sub').removeClass('loading');
+
+          console.log(obj);
+          // 调用模板
+          var html = template('tpl', obj.data.forecast);
+          $('.weather_list').html(html);
+
+        }
+      });
+    });
+
+
+    // 2. 热词的点击事件
+    $('.hotkey>a').click(function () {
+
+
+      $('.input_txt').val($(this).text());
+      // 用代码触发搜索的点击事件
+      $('.input_sub').trigger('click');
+
+    })
+
+
+    // 不要写到任何时间，就代表页面一打开，就先把深圳写到文本框，再调用搜索点击事件
+    $('.input_txt').val('深圳');
+    // 用代码触发搜索的点击事件
+    $('.input_sub').trigger('click');
+
+  </script>
+
+</body>
+
+</html>
